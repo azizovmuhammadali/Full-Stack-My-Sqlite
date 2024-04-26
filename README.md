@@ -1,157 +1,59 @@
-<div class="markdown-body">
-<p class="text-muted m-b-15">
-</p><h2>My Sqlite</h2>
-<table>
-<thead>
-<tr>
-<th>Technical details</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Submit files</td>
-<td>my_sqlite_request. - my_sqlite_cli.</td>
-</tr>
-<tr>
-<td>Languages</td>
-<td>It needs to be completed in the language you are working on right now. If you are doing Bootcamp Javascript, then javascript (file extension will be .js). If you are doing Bootcamp Ruby, then Ruby (file extension will be .rb). It goes the same for Python, Java, C++, Rust, ...</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><strong>Part 00</strong>
-Create a class called <code>MySqliteRequest</code> in <code>my_sqlite_request.rb</code>. It will have a similar behavior than a request on the real sqlite.</p>
-<p>All methods, except <code>run</code>, will return an <code>instance</code> of <code>my_sqlite_request</code>. You will build the request by progressive call and execute the request by calling <code>run</code>.</p>
-<p>Each row must have an ID.</p>
-<p>We will do only <code>1</code> join and <code>1</code> where per request.</p>
-<p><strong>Example00</strong>:</p>
-<pre class=" language-plain"><code class=" language-plain">request = MySqliteRequest.new
-request = request.from('nba_player_data.csv')
-request = request.select('name')
-request = request.where('birth_state', 'Indiana')
-request.run
-=&gt; [{"name" =&gt; "Andre Brown"]
-</code></pre>
-<p><strong>Example01</strong>:</p>
-<pre class=" language-plain"><code class=" language-plain">Input: MySqliteRequest.new('nba_player_data').select('name').where('birth_state', 'Indiana').run
-Output: [{"name" =&gt; "Andre Brown"]
-</code></pre>
-<ol start="0">
-<li>Constructor
-It will be prototyped:</li>
-</ol>
-<p><code>def initialize</code></p>
-<ol>
-<li>From
-Implement a <code>from</code> method which must be present on each request. From will take a parameter and it will be the name of the <code>table</code>. (technically a table_name is also a filename (.csv))</li>
-</ol>
-<p>It will be prototyped:</p>
-<p><code>def from(table_name)</code></p>
-<ol start="2">
-<li>Select
-Implement a <code>where</code> method which will take one argument a string OR an array of string. It will continue to build the request. During the run() you will collect on the result only the columns sent as parameters to select :-).</li>
-</ol>
-<p>It will be prototyped:</p>
-<p><code>def select(column_name)</code>
-OR
-<code>def select([column_name_a, column_name_b])</code></p>
-<ol start="3">
-<li>Where
-Implement a <code>where</code> method which will take 2 arguments: column_name and value.
-It will continue to build the request. During the run() you will filter the result which match the value.</li>
-</ol>
-<p>It will be prototyped:</p>
-<p><code>def where(column_name, criteria)</code></p>
-<ol start="4">
-<li>Join
-Implement a <code>join</code> method which will load another filename_db and will join both database on a <code>on</code> column.</li>
-</ol>
-<p>It will be prototyped:</p>
-<p><code>def join(column_on_db_a, filename_db_b, column_on_db_b)</code></p>
-<ol start="5">
-<li>Order
-Implement an <code>order</code> method which will received two parameters, <code>order</code> (:asc or :description) and <code>column_name</code>. It will sort depending on the <code>order</code> base on the <code>column_name</code>.</li>
-</ol>
-<p>It will be prototyped:</p>
-<p><code>def order(order, column_name)</code></p>
-<ol start="6">
-<li>Insert
-Implement a method to <code>insert</code> which will receive <code>a table name</code> (filename). It will continue to build the request.</li>
-</ol>
-<p><code>def insert(table_name)</code></p>
-<ol start="7">
-<li>Values
-Implement a method to <code>values</code> which will receive <code>data</code>. (a hash of data on format (<code>key</code> =&gt; <code>value</code>)).
-It will continue to build the request. During the run() you do the insert.</li>
-</ol>
-<p><code>def values(data)</code></p>
-<ol start="8">
-<li>Update
-Implement a method to <code>update</code> which will receive <code>a table name</code> (filename). It will continue to build the request.
-An update request might be associated with a <code>where</code> request.</li>
-</ol>
-<p><code>def update(table_name)</code></p>
-<ol start="8">
-<li>Set
-Implement a method to <code>update</code> which will receive <code>data</code> (a hash of data on format (<code>key</code> =&gt; <code>value</code>)).
-It will perform the update of attributes on all <code>matching</code> row.
-An update request might be associated with a <code>where</code> request.</li>
-</ol>
-<p><code>def set(data)</code></p>
-<ol start="9">
-<li>Delete
-Implement a <code>delete</code> method. It set the request to delete on all <code>matching</code> row. It will continue to build the request.
-An delete request might be associated with a <code>where</code> request.</li>
-</ol>
-<p><code>def delete</code></p>
-<ol start="10">
-<li>Run
-Implement a <code>run</code> method and it will execute the request.</li>
-</ol>
-<p><strong>Part 01</strong>
-Create a program which will be a Command Line Interface (CLI) to your <code>MySqlite</code> class.
-It will use <code>readline</code> and we will run it with <code>ruby my_sqlite_cli.rb</code>.</p>
-<p>It will accept request with:</p>
-<ul>
-<li>SELECT|INSERT|UPDATE|DELETE</li>
-<li>FROM</li>
-<li>WHERE (max 1 condition)</li>
-<li>JOIN ON (max 1 condition)
-Note, you can have multiple WHERE.
-Yes, you should save and load the database from a file. :-)</li>
-</ul>
-<p>** Example 00 ** (Ruby)</p>
-<pre class=" language-plain"><code class=" language-plain">$&gt;ruby my_sqlite_cli.rb class.db
-MySQLite version 0.1 20XX-XX-XX
-my_sqlite_cli&gt; SELECT * FROM students;
-Jane|me@janedoe.com|A|http://blog.janedoe.com
-my_sqlite_cli&gt;INSERT INTO students VALUES (John, john@johndoe.com, A, https://blog.johndoe.com);
-my_sqlite_cli&gt;UPDATE students SET email = 'jane@janedoe.com', blog = 'https://blog.janedoe.com' WHERE name = 'Jane';
-my_sqlite_cli&gt;DELETE FROM students WHERE name = 'John';
-my_sqlite_cli&gt;quit
-$&gt;
-</code></pre>
-<p>** Example 00 ** (Javascript)</p>
-<pre class=" language-plain"><code class=" language-plain">$&gt;node my_sqlite_cli.js class.db
-MySQLite version 0.1 20XX-XX-XX
-my_sqlite_cli&gt; SELECT * FROM students;
-Jane|me@janedoe.com|A|http://blog.janedoe.com
-my_sqlite_cli&gt;INSERT INTO students VALUES (John, john@johndoe.com, A, https://blog.johndoe.com);
-my_sqlite_cli&gt;UPDATE students SET email = 'jane@janedoe.com', blog = 'https://blog.janedoe.com' WHERE name = 'Jane';
-my_sqlite_cli&gt;DELETE FROM students WHERE name = 'John';
-my_sqlite_cli&gt;quit
-$&gt;
-</code></pre>
-<p>Our examples will use these CSV
-<a href="https://storage.googleapis.com/qwasar-public/nba_player_data.csv" target="_blank">Nba Player Data</a>
-<a href="https://storage.googleapis.com/qwasar-public/nba_players.csv" target="_blank">Nba Players</a></p>
-<p>In addition to accomplishing this challenge. You should take a read about those concepts:</p>
-<ul>
-<li>B-Tree (not binary tree "B-Tree")</li>
-<li>TRIE</li>
-<li>Reverse Index</li>
-</ul>
+# Welcome to My Sqlite
+***
 
-<p></p>
-</div>
+## Task
+
+It looks like you've provided a detailed set of requirements for implementing a simplified SQLite-like database and 
+a command-line interface (CLI) for interacting with it. 
+This is quite an extensive task, and I'll provide you with a general outline and code snippets to get you started. 
+You may need to adapt and expand on this based on your specific requirements and the language you're using (Ruby in this case).
+
+## Description
+
+MySqliteRequest Class
+This class is designed to represent a SQLite-like database request. 
+It has various methods to build a database query and a run method to execute the query. Here's an overview of each method:
+initialize: Initializes the class with default values for instance variables.
+from(table_name): Sets the table name for the query. This method is used to specify the table from which data will be queried.
+select(columns): Specifies the columns to be selected in the query. It can take either a single column as a string or an array of columns.
+where(column_name, value): Adds a condition to the WHERE clause of the query. It takes a column name and a value to filter the results.
+join(column_on_db_a, filename_db_b, column_on_db_b): Adds a JOIN clause to the query. 
+It specifies how two tables should be joined based on specific columns.
+order(order, column_name): Adds an ORDER BY clause to the query, specifying the column and the order (ascending or descending).
+insert(table_name): Sets the request to be an INSERT query for a specific table.
+values(data): Adds values for an INSERT query. 
+It takes a hash of data where keys are column names and values are the corresponding values.
+update(table_name): Sets the request to be an UPDATE query for a specific table.
+set(data): Specifies the values to be updated in an UPDATE query.
+It takes a hash of data where keys are column names and values are the corresponding updated values.
+delete: Sets the request to be a DELETE query.
+run: Placeholder method that should be implemented to execute the query based on the configured parameters.
+
+## Installation
+
+MySqliteCLI Class
+This class represents a Command Line Interface (CLI) for interacting with the MySqliteRequest class. 
+It takes user input, processes commands, and interacts with the MySqliteRequest instance. Here's an overview:
+initialize(database_filename): Initializes the CLI with the name of the database file.
+start: Starts the CLI loop, taking user input until the user types 'quit'.
+process_input(input): Processes user input by splitting it into tokens and determining the command to execute.
+process_sql_command(command, args): Processes SQL commands such as SELECT, INSERT, UPDATE, DELETE.
+process_select(args), process_insert(args), process_update(args), process_delete(args): 
+Placeholder methods that should be implemented to handle specific SQL commands.
+
+## Usage
+
+Usage:
+The usage section at the end creates an instance of MySqliteCLI, initializes it with a database file name, and starts the CLI loop.
+Note:
+The code provided is a basic template and doesn't include the actual logic to execute queries, read/write from/to a database file,
+ or handle specific SQL commands. 
+ You'll need to implement these parts based on your requirements and the language you're using (Ruby in this case). 
+ The code also lacks proper error handling and input validation, which should be added for a robust implementation.
+
+
+### The Core Team
+
+
+<span><i>Made at <a href='https://qwasar.io'>Qwasar SV -- Software Engineering School</a></i></span>
+<span><img alt='Qwasar SV -- Software Engineering School's Logo' src='https://storage.googleapis.com/qwasar-public/qwasar-logo_50x50.png' width='20px' /></span>
